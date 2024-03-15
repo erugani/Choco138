@@ -16,7 +16,7 @@ public class Account {
     String jsonBody;
     String uri = "https://bookstore.toolsqa.com/Account/v1/";
     Response resposta;
-    String token;
+    static String token;
     Gson gson = new Gson();
     AccountEntity account = new AccountEntity();
 
@@ -24,7 +24,7 @@ public class Account {
     @Test (priority = 1)
         public void testCreateUser (){
 
-        account.userName = "charlie080";  //userID 2acb1634-452b-447d-a229-13aaeaf45539
+        account.userName = "charlie007";  //userID 2acb1634-452b-447d-a229-13aaeaf45539
         account.password = "P@ss0rd1";
 
         jsonBody = gson.toJson(account);
@@ -126,6 +126,20 @@ public class Account {
                 .body("username", is(account.userName))
         ;
 
+
+    }
+    @Test(priority = 6)
+    public void testDeleteUser(){
+        given()
+                .log().all()
+                .contentType(ct)
+                .header("Authorization", "Bearer " + token)
+        .when()
+                .delete(uri + "User/" + userId)
+        .then()
+                .log().all()
+                .statusCode(204)
+        ;
 
     }
 }
