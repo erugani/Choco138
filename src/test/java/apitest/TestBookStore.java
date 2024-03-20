@@ -24,7 +24,9 @@ public void setUp(ITestContext context){
 }
 @AfterClass
 //@AfterMethod
-public void tearDown(){
+public void tearDown() throws InterruptedException {
+    //account.testResearchUser();
+    Thread.sleep(8000);
     account.testDeleteUser();
 }
 
@@ -89,12 +91,20 @@ public void testUpdateLoan(ITestContext context){
             .statusCode(200)
             .body("books[0].isbn", is(isbnNovo))
             ;
+    }
+@Test(priority = 4)
+public void testDeleteLoan(ITestContext context){
 
-
-
-
-
+    given()
+            .log().all()
+            .contentType(ct)
+            .header("Authorization", "Bearer " + context.getAttribute("token"))
+    .when()
+            .delete(uri + "Books?UserId=" + context.getAttribute("userID"))
+    .then()
+            .log().all()
+            .statusCode(204)
+    ;
 
     }
-
 }
