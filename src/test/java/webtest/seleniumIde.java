@@ -35,34 +35,43 @@ public class seleniumIde {
     JavascriptExecutor js;
     @BeforeMethod
     public void setUp() {
-        WebDriverManager.chromedriver().setup();
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("--remote-allow-origins=*");
-        driver = new ChromeDriver(options);
+        WebDriverManager.chromedriver().clearDriverCache().setup();
+        WebDriverManager.chromedriver().clearResolutionCache().setup();
+        WebDriverManager.chromedriver().setup(); // instala o driver mais atual do browser Chrome
+        ChromeOptions options = new ChromeOptions(); // instancia o objeto de configuração
+        options.addArguments("--remote-allow-origins=*"); // permite origens remotas
+
+        driver = new ChromeDriver(options); // instancia o Selenium como ChromeDriver com a configuração desejada
+        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(5000));
+        // 1 minuto
+        // 60 segundos
+        // 60000 milisegundos
+
+
         js = (JavascriptExecutor) driver;
         vars = new HashMap<String, Object>();
-        driver.manage().timeouts().implicitlyWait(Duration.ofMillis(5000));
     }
     @AfterMethod
     public void tearDown() {
         driver.quit();
     }
     @Test
-    public void login() {
+    public void login() throws InterruptedException {
         driver.get("https://www.saucedemo.com/");
-        driver.manage().window().setSize(new Dimension(1900, 1020));
+        driver.manage().window().setSize(new Dimension(802, 824));
         driver.findElement(By.cssSelector("*[data-test=\"username\"]")).click();
         driver.findElement(By.cssSelector("*[data-test=\"username\"]")).sendKeys("standard_user");
         driver.findElement(By.cssSelector("*[data-test=\"password\"]")).click();
         driver.findElement(By.cssSelector("*[data-test=\"password\"]")).sendKeys("secret_sauce");
         driver.findElement(By.cssSelector("*[data-test=\"login-button\"]")).click();
-        driver.findElement(By.cssSelector("#item_4_title_link > .inventory_item_name")).click();
-        assertThat(driver.findElement(By.cssSelector(".inventory_details_name")).getText(), is("Sauce Labs Backpack"));
-        assertThat(driver.findElement(By.cssSelector(".inventory_details_price")).getText(), is("$29.99"));
-        driver.findElement(By.cssSelector("*[data-test=\"remove-sauce-labs-backpack\"]")).click();
+        // carregamento da página interna --> demora um pouco
+        // Este passo não é necessário, pois o carrinho já inicia vazio
+        // driver.findElement(By.cssSelector("*[data-test=\"remove-sauce-labs-backpack\"]")).click();
+        assertThat(driver.findElement(By.cssSelector("#item_4_title_link > .inventory_item_name")).getText(), is("Sauce Labs Backpack"));
+        assertThat(driver.findElement(By.cssSelector(".inventory_item:nth-child(1) .inventory_item_price")).getText(), is("$29.99"));
         driver.findElement(By.cssSelector("*[data-test=\"add-to-cart-sauce-labs-backpack\"]")).click();
         driver.findElement(By.linkText("1")).click();
-        assertThat(driver.findElement(By.cssSelector(".inventory_item_name")).getText(), is("Sauce Labs Backpack"));
         driver.findElement(By.cssSelector("*[data-test=\"checkout\"]")).click();
+        assertThat(driver.findElement(By.cssSelector(".title")).getText(), is("Checkout: Your Information"));
     }
 }
