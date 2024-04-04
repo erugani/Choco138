@@ -20,9 +20,10 @@ import static org.testng.Assert.assertTrue;
 
 public class selectProduct {
 
-    WebDriver driver;
+    static WebDriver driver;
+    //static String userForCookie;
     @BeforeAll
-    public void before_all(){
+    public static void before_all(){
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--remote-allow-origins=*");
         WebDriverManager.chromedriver().setup();
@@ -32,7 +33,11 @@ public class selectProduct {
         driver.manage().window().maximize();
     }
     @AfterAll
-    public void after_all(){
+    public static void after_all() throws InterruptedException {
+        //System.out.println(driver.manage().getCookies());
+        //driver.manage().deleteCookieNamed("session-username=" + userForCookie);
+        driver.findElement(By.cssSelector("button.btn.btn_secondary.btn_small.cart_button")).click();
+        Thread.sleep(3000);
         driver.quit();
     }
 
@@ -44,12 +49,15 @@ public class selectProduct {
     public void i_filled_user_and_password(String user, String password) {
         driver.findElement(By.id("user-name")).sendKeys(user);
         driver.findElement(By.id("password")).sendKeys(password);
+
+        //userForCookie = user;
+
     }
     @And("I click in Login")
     public void i_click_in_login() {
         driver.findElement(By.id("login-button")).click();
     }
-    @Then("show page's title {string}")
+    //@Then("show page's title {string}")
     @Then("I verify the page's title {string}")
     public void show_page_s_title(String pageTitle) {
         assertEquals(driver.findElement(By.cssSelector("span.title")).getText(), pageTitle);
@@ -68,11 +76,14 @@ public class selectProduct {
     }
     @And("I verify the product price {string}")
     public void i_verify_the_product_price(String productPrice) {
-        assertEquals(driver.findElement(By.id("div.inventory_details_price")).getText(), productPrice);
+        assertEquals(driver.findElement(By.cssSelector("div.inventory_details_price")).getText(), productPrice);
     }
     @And("I click in Add to Cart")
     public void i_click_in_add_to_cart() {
-        driver.findElement(By.id("add-to-cart")).click();
+
+        //driver.findElement(By.id("add-to-cart")).click();
+        driver.findElement(By.cssSelector("button.btn.btn_primary.btn_small.btn_inventory")).click();
+
     }
     @And("I click in Cart icon")
     public void i_click_in_cart_icon() {
@@ -86,6 +97,17 @@ public class selectProduct {
     public void i_verify_the_quantity_is(String quantity) {
         assertEquals(driver.findElement(By.cssSelector("div.cart_quantity")).getText(), quantity);
     }
+
+    @Then("I Verify the product title {string} in cart")
+    public void i_verify_the_product_title_in_cart(String productTitle) {
+        assertEquals(driver.findElement(By.cssSelector("div.inventory_item_name")).getText(), productTitle);
+    }
+
+    @Then("I verify the product price {string} in cart")
+    public void i_verify_the_product_price_in_cart(String productPrice) {
+        assertEquals(driver.findElement(By.cssSelector("div.inventory_item_price")).getText(), productPrice);
+    }
+
 
 
 }

@@ -14,8 +14,8 @@ dependencies {
     testImplementation("io.rest-assured:rest-assured:5.3.0")
     implementation("com.google.code.gson:gson:2.10.1")
     implementation("org.seleniumhq.selenium:selenium-java:4.18.1")
-    implementation("io.cucumber:cucumber-java:7.13.0")
-    implementation("io.cucumber:cucumber-testng:7.13.0")
+    implementation("io.cucumber:cucumber-java:7.11.0")
+    implementation("io.cucumber:cucumber-testng:7.11.0")
 
     implementation("io.github.bonigarcia:webdrivermanager:5.7.0")
 
