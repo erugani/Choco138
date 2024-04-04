@@ -27,7 +27,7 @@
 
 
 
-    Scenario Outline: Selecting Product with Success
+    Scenario Outline: Selecting Product with Success DDT
       Given I acess SauceDemo Store
       When I filled user <user> and password <password>
       And I click in Login
