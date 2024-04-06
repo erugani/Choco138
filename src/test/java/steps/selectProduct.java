@@ -10,10 +10,12 @@ import io.cucumber.java.en.When;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
 import java.time.Duration;
+import java.util.List;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
@@ -36,8 +38,9 @@ public class selectProduct {
     public static void after_all() throws InterruptedException {
         //System.out.println(driver.manage().getCookies());
         //driver.manage().deleteCookieNamed("session-username=" + userForCookie);
+        //Thread.sleep(3000);
         driver.findElement(By.cssSelector("button.btn.btn_secondary.btn_small.cart_button")).click();
-        Thread.sleep(3000);
+        //Thread.sleep(3000);
         driver.quit();
     }
 
@@ -100,13 +103,24 @@ public class selectProduct {
 
     @Then("I Verify the product title {string} in cart")
     public void i_verify_the_product_title_in_cart(String productTitle) {
+        List<WebElement> lista = driver.findElements(By.cssSelector("div.inventory_item_name"));
+
+        for (int i = 1; i < lista.size(); i++) {
+
+            driver.findElement(By.cssSelector("button.btn.btn_secondary.btn_small.cart_button")).click();
+
+        }
+
         assertEquals(driver.findElement(By.cssSelector("div.inventory_item_name")).getText(), productTitle);
     }
 
     @Then("I verify the product price {string} in cart")
     public void i_verify_the_product_price_in_cart(String productPrice) {
+
         assertEquals(driver.findElement(By.cssSelector("div.inventory_item_price")).getText(), productPrice);
     }
+
+
 
 
 
