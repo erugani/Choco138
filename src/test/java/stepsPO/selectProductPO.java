@@ -19,20 +19,22 @@ public class selectProductPO {
     private  InventoryItemPage inventoryItemPage;
     private  HomePage homePage;
 
-    private static BasePage basePage;
+    private static CommonPage commonPage;
 
 
-    public selectProductPO(BasePage basePage){
-        this.driver = basePage.driver;
+    public selectProductPO(Base base){
+        this.driver = base.driver;
 
     }
 
-
-
-
-    @Given("I acess SauceDemo Store PO")
-    public void i_acess_sauce_demo_store() {
+    @Given("I access SauceDemo Store PO")
+    public void i_access_sauce_demo_store() {
         driver.get("https://www.saucedemo.com");
+        homePage = new HomePage(this.driver);
+        inventoryPage = new InventoryPage(this.driver);
+        inventoryItemPage = new InventoryItemPage(this.driver);
+        cartPage = new CartPage(this.driver);
+
     }
     @When("I filled user {string} and password {string} PO")
     public void i_filled_user_and_password(String user, String password) {

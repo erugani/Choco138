@@ -1,40 +1,34 @@
 package stepsPO;
 
-import io.cucumber.java.AfterAll;
-import io.cucumber.java.BeforeAll;
+import io.cucumber.java.After;
+import io.cucumber.java.Before;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.support.PageFactory;
-import org.testng.annotations.AfterClass;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
-import pages.BasePage;
-import pages.HomePage;
+import pages.Base;
 
 import java.time.Duration;
 
 public class Hooks {
-    BasePage basePage;
+    Base base;
 
-    public Hooks(BasePage basePage) {
-        this.basePage = basePage;
+    public Hooks(Base base) {
+        this.base = base;
     }
-    @BeforeClass
+    @Before
     public void before_all(){
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--remote-allow-origins=*");
         WebDriverManager.chromedriver().setup();
 
-        basePage.driver = new ChromeDriver(options);
+        base.driver = new ChromeDriver(options);
 
-        basePage.driver.manage().timeouts().implicitlyWait(Duration.ofMillis(5000));
-        basePage.driver.manage().window().maximize();
+        base.driver.manage().timeouts().implicitlyWait(Duration.ofMillis(5000));
+        base.driver.manage().window().maximize();
     }
-    @AfterClass
+    @After
     public void after_all() {
 
-        basePage.driver.quit();
+        base.driver.quit();
     }
 }

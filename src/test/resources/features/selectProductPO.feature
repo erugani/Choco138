@@ -8,6 +8,7 @@
 #      E exibe o link do carrinho de compras
 #      Quando clica no produto "Sauce Labs Backpack"
 
+Feature: Select Product in Store PO
      Scenario Outline: Selecting Product with Success PO
       Given I access SauceDemo Store PO
       When I filled user <user> and password <password> PO
